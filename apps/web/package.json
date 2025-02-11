@@ -15,6 +15,7 @@
     "@ant-design/icons": "^5.6.1",
     "@ant-design/nextjs-registry": "^1.0.2",
     "@repo/ui": "workspace:*",
+    "@yudiel/react-qr-scanner": "^2.2.1",
     "antd": "^5.23.4",
     "html5-qrcode": "^2.3.8",
     "next": "^15.1.6",

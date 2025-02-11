@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" cz-shortcut-listen="true">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AntdProvider>
           <Toploader color={'#FF7D1C'} showSpinner={false} />
