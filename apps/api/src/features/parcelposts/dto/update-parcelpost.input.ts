@@ -1,8 +1,9 @@
-import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
-import { CreateParcelpostInput } from './create-parcelpost.input';
+import { InputType, OmitType } from '@nestjs/graphql';
+import { Parcelpost } from '../entities/parcelpost.entity';
 
 @InputType()
-export class UpdateParcelpostInput extends PartialType(CreateParcelpostInput) {
-  @Field(() => ID)
-  id: string;
-}
+export class UpdateParcelpostInput extends OmitType(
+  Parcelpost,
+  ['createdAt', 'updatedAt'],
+  InputType,
+) {}

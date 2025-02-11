@@ -20,6 +20,7 @@ type Parcelpost {
 
   """สถานะพัสดุ"""
   status: String!
+  lockerId: Int
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -55,6 +56,25 @@ type Mutation {
 }
 
 input CreateParcelpostInput {
+  """รหัสพัสดุ"""
+  parcelCode: String
+
+  """ชื่อผู้ส่ง"""
+  senderName: String
+
+  """ชื่อผู้รับ"""
+  receiverName: String
+
+  """ห้อง"""
+  unitCode: String
+
+  """สถานะพัสดุ"""
+  status: String!
+  lockerId: Int
+}
+
+input UpdateParcelpostInput {
+  id: ID!
   code: String!
 
   """รหัสพัสดุ"""
@@ -71,30 +91,7 @@ input CreateParcelpostInput {
 
   """สถานะพัสดุ"""
   status: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-input UpdateParcelpostInput {
-  code: String
-
-  """รหัสพัสดุ"""
-  parcelCode: String
-
-  """ชื่อผู้ส่ง"""
-  senderName: String
-
-  """ชื่อผู้รับ"""
-  receiverName: String
-
-  """ห้อง"""
-  unitCode: String
-
-  """สถานะพัสดุ"""
-  status: String
-  createdAt: DateTime
-  updatedAt: DateTime
-  id: ID!
+  lockerId: Int
 }
 
 input CreateLockerInput {

@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class Parcelpost {
@@ -22,6 +22,9 @@ export class Parcelpost {
 
   @Field({ description: 'สถานะพัสดุ' })
   status: string;
+
+  @Field(() => Int, { nullable: true })
+  lockerId: number;
 
   @Field(() => Date)
   createdAt: Date;

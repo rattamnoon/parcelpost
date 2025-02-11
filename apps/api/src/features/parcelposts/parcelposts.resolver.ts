@@ -9,24 +9,24 @@ export class ParcelpostsResolver {
   constructor(private readonly parcelpostsService: ParcelpostsService) {}
 
   @Mutation(() => Parcelpost)
-  createParcelpost(
+  async createParcelpost(
     @Args('createParcelpostInput') createParcelpostInput: CreateParcelpostInput,
   ) {
     return this.parcelpostsService.create(createParcelpostInput);
   }
 
   @Query(() => [Parcelpost], { name: 'parcelposts' })
-  findAll() {
+  async findAll() {
     return this.parcelpostsService.findAll();
   }
 
   @Query(() => Parcelpost, { name: 'parcelpost' })
-  findOne(@Args('id', { type: () => ID }) id: string) {
+  async findOne(@Args('id', { type: () => ID }) id: string) {
     return this.parcelpostsService.findOne(id);
   }
 
   @Mutation(() => Parcelpost)
-  updateParcelpost(
+  async updateParcelpost(
     @Args('updateParcelpostInput') updateParcelpostInput: UpdateParcelpostInput,
   ) {
     return this.parcelpostsService.update(
@@ -36,7 +36,7 @@ export class ParcelpostsResolver {
   }
 
   @Mutation(() => Parcelpost)
-  removeParcelpost(@Args('id', { type: () => ID }) id: string) {
+  async removeParcelpost(@Args('id', { type: () => ID }) id: string) {
     return this.parcelpostsService.remove(id);
   }
 }

@@ -4,6 +4,6 @@ import { Parcelpost } from '../entities/parcelpost.entity';
 @InputType()
 export class CreateParcelpostInput extends OmitType(
   Parcelpost,
-  ['id'],
+  ['id', 'code', 'createdAt', 'updatedAt'],
   InputType,
 ) {}

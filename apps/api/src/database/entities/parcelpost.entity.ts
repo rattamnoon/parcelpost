@@ -42,7 +42,7 @@ export class ParcelPost {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @Column()
+  @Column({ type: 'int', nullable: true })
   lockerId: number;
 
   @ManyToOne(() => Locker, (locker) => locker.parcelPosts)
