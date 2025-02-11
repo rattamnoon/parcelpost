@@ -109,6 +109,7 @@ export type Parcelpost = {
   createdAt: Scalars['DateTime']['output'];
   customerReceiverDate?: Maybe<Scalars['DateTime']['output']>;
   id: Scalars['ID']['output'];
+  locker?: Maybe<Locker>;
   lockerId?: Maybe<Scalars['Int']['output']>;
   nitiReceiverDate?: Maybe<Scalars['DateTime']['output']>;
   /** รหัสพัสดุ */
@@ -129,6 +130,7 @@ export type Query = {
   locker: Locker;
   lockers: Array<Locker>;
   parcelpost: Parcelpost;
+  parcelpostByCode: Parcelpost;
   parcelposts: Array<Parcelpost>;
 };
 
@@ -140,6 +142,11 @@ export type QueryLockerArgs = {
 
 export type QueryParcelpostArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryParcelpostByCodeArgs = {
+  code: Scalars['String']['input'];
 };
 
 
@@ -183,6 +190,13 @@ export type ParcelpostsQueryVariables = Exact<{
 
 
 export type ParcelpostsQuery = { __typename?: 'Query', parcelposts: Array<{ __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any }> };
+
+export type ParcelpostByCodeQueryVariables = Exact<{
+  code: Scalars['String']['input'];
+}>;
+
+
+export type ParcelpostByCodeQuery = { __typename?: 'Query', parcelpostByCode: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any } };
 
 export type NitiReceiverMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -253,6 +267,46 @@ export type ParcelpostsQueryHookResult = ReturnType<typeof useParcelpostsQuery>;
 export type ParcelpostsLazyQueryHookResult = ReturnType<typeof useParcelpostsLazyQuery>;
 export type ParcelpostsSuspenseQueryHookResult = ReturnType<typeof useParcelpostsSuspenseQuery>;
 export type ParcelpostsQueryResult = Apollo.QueryResult<ParcelpostsQuery, ParcelpostsQueryVariables>;
+export const ParcelpostByCodeDocument = gql`
+    query ParcelpostByCode($code: String!) {
+  parcelpostByCode(code: $code) {
+    ...Parcelpost
+  }
+}
+    ${ParcelpostFragmentDoc}`;
+
+/**
+ * __useParcelpostByCodeQuery__
+ *
+ * To run a query within a React component, call `useParcelpostByCodeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useParcelpostByCodeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useParcelpostByCodeQuery({
+ *   variables: {
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useParcelpostByCodeQuery(baseOptions: Apollo.QueryHookOptions<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables> & ({ variables: ParcelpostByCodeQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>(ParcelpostByCodeDocument, options);
+      }
+export function useParcelpostByCodeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>(ParcelpostByCodeDocument, options);
+        }
+export function useParcelpostByCodeSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>(ParcelpostByCodeDocument, options);
+        }
+export type ParcelpostByCodeQueryHookResult = ReturnType<typeof useParcelpostByCodeQuery>;
+export type ParcelpostByCodeLazyQueryHookResult = ReturnType<typeof useParcelpostByCodeLazyQuery>;
+export type ParcelpostByCodeSuspenseQueryHookResult = ReturnType<typeof useParcelpostByCodeSuspenseQuery>;
+export type ParcelpostByCodeQueryResult = Apollo.QueryResult<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>;
 export const NitiReceiverDocument = gql`
     mutation NitiReceiver($id: ID!) {
   nitiReceiver(id: $id) {

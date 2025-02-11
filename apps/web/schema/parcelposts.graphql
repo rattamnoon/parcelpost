@@ -18,6 +18,11 @@ query Parcelposts($status: String, $unitCode: String) {
   }
 }
 
+query ParcelpostByCode($code: String!) {
+  parcelpostByCode(code: $code) {
+    ...Parcelpost
+  }
+}
 
 mutation NitiReceiver($id: ID!) {
   nitiReceiver(id: $id) {

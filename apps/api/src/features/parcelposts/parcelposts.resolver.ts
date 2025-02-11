@@ -43,6 +43,11 @@ export class ParcelpostsResolver {
     return this.parcelpostsService.findOne(id);
   }
 
+  @Query(() => Parcelpost, { name: 'parcelpostByCode' })
+  async findOneByCode(@Args('code', { type: () => String }) code: string) {
+    return this.parcelpostsService.findOneByCode(code);
+  }
+
   @Mutation(() => Parcelpost)
   async updateParcelpost(
     @Args('updateParcelpostInput') updateParcelpostInput: UpdateParcelpostInput,

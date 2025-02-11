@@ -1,6 +1,7 @@
+import { useParcelpostByCodeQuery } from "@/gql/graphql";
 import { Flex, Grid, Modal } from "antd";
 import { useQRCode } from "next-qrcode";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 
 interface CustomerModalProps {
   open: boolean;
@@ -15,6 +16,19 @@ export const CustomerModal: React.FC<CustomerModalProps> = ({
 }) => {
   const { Canvas } = useQRCode();
   const { xs } = Grid.useBreakpoint();
+
+  const { data } = useParcelpostByCodeQuery({
+    variables: { code: code },
+    skip: !code,
+    pollInterval: 1000,
+  });
+
+  const parcelpost = useMemo(() => data?.parcelpostByCode, [data]);
+
+  useEffect(() => {
+    const isChchekd = open === true && parcelpost?.status === "รับแล้ว";
+    if (isChchekd) return onCancel();
+  }, [onCancel, open, parcelpost]);
 
   return (
     <Modal

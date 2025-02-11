@@ -15,6 +15,7 @@ export const CustomerPage: React.FC = () => {
       status: activeTab,
       unitCode: "2001",
     },
+    pollInterval: 1000,
   });
 
   const parcelposts = useMemo(() => data?.parcelposts ?? [], [data]);
