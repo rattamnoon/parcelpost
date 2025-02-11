@@ -22,6 +22,8 @@ export type CreateLockerInput = {
   building: Scalars['String']['input'];
   code: Scalars['String']['input'];
   createdAt: Scalars['DateTime']['input'];
+  location: Scalars['String']['input'];
+  size: Scalars['String']['input'];
   updatedAt: Scalars['DateTime']['input'];
 };
 
@@ -47,6 +49,8 @@ export type Locker = {
   code: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
+  location: Scalars['String']['output'];
+  size: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
 };
 
@@ -75,12 +79,12 @@ export type MutationCreateParcelpostArgs = {
 
 
 export type MutationCustomerReceiverArgs = {
-  id: Scalars['ID']['input'];
+  code: Scalars['String']['input'];
 };
 
 
 export type MutationNitiReceiverArgs = {
-  id: Scalars['ID']['input'];
+  parcelCode: Scalars['String']['input'];
 };
 
 
@@ -160,6 +164,8 @@ export type UpdateLockerInput = {
   code?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   id: Scalars['Int']['input'];
+  location?: InputMaybe<Scalars['String']['input']>;
+  size?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -181,7 +187,7 @@ export type UpdateParcelpostInput = {
   unitCode?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type ParcelpostFragment = { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any };
+export type ParcelpostFragment = { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null };
 
 export type ParcelpostsQueryVariables = Exact<{
   status?: InputMaybe<Scalars['String']['input']>;
@@ -189,28 +195,28 @@ export type ParcelpostsQueryVariables = Exact<{
 }>;
 
 
-export type ParcelpostsQuery = { __typename?: 'Query', parcelposts: Array<{ __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any }> };
+export type ParcelpostsQuery = { __typename?: 'Query', parcelposts: Array<{ __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null }> };
+
+export type CreateParcelpostMutationVariables = Exact<{
+  createParcelpostInput: CreateParcelpostInput;
+}>;
+
+
+export type CreateParcelpostMutation = { __typename?: 'Mutation', createParcelpost: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null } };
 
 export type ParcelpostByCodeQueryVariables = Exact<{
   code: Scalars['String']['input'];
 }>;
 
 
-export type ParcelpostByCodeQuery = { __typename?: 'Query', parcelpostByCode: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any } };
-
-export type NitiReceiverMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type NitiReceiverMutation = { __typename?: 'Mutation', nitiReceiver: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any } };
+export type ParcelpostByCodeQuery = { __typename?: 'Query', parcelpostByCode: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null } };
 
 export type CustomerReceiverMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  code: Scalars['String']['input'];
 }>;
 
 
-export type CustomerReceiverMutation = { __typename?: 'Mutation', customerReceiver: { __typename?: 'Parcelpost', id: string } };
+export type CustomerReceiverMutation = { __typename?: 'Mutation', customerReceiver: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null } };
 
 export const ParcelpostFragmentDoc = gql`
     fragment Parcelpost on Parcelpost {
@@ -224,6 +230,13 @@ export const ParcelpostFragmentDoc = gql`
   lockerId
   createdAt
   updatedAt
+  locker {
+    id
+    code
+    building
+    size
+    location
+  }
 }
     `;
 export const ParcelpostsDocument = gql`
@@ -267,6 +280,39 @@ export type ParcelpostsQueryHookResult = ReturnType<typeof useParcelpostsQuery>;
 export type ParcelpostsLazyQueryHookResult = ReturnType<typeof useParcelpostsLazyQuery>;
 export type ParcelpostsSuspenseQueryHookResult = ReturnType<typeof useParcelpostsSuspenseQuery>;
 export type ParcelpostsQueryResult = Apollo.QueryResult<ParcelpostsQuery, ParcelpostsQueryVariables>;
+export const CreateParcelpostDocument = gql`
+    mutation CreateParcelpost($createParcelpostInput: CreateParcelpostInput!) {
+  createParcelpost(createParcelpostInput: $createParcelpostInput) {
+    ...Parcelpost
+  }
+}
+    ${ParcelpostFragmentDoc}`;
+export type CreateParcelpostMutationFn = Apollo.MutationFunction<CreateParcelpostMutation, CreateParcelpostMutationVariables>;
+
+/**
+ * __useCreateParcelpostMutation__
+ *
+ * To run a mutation, you first call `useCreateParcelpostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateParcelpostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createParcelpostMutation, { data, loading, error }] = useCreateParcelpostMutation({
+ *   variables: {
+ *      createParcelpostInput: // value for 'createParcelpostInput'
+ *   },
+ * });
+ */
+export function useCreateParcelpostMutation(baseOptions?: Apollo.MutationHookOptions<CreateParcelpostMutation, CreateParcelpostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateParcelpostMutation, CreateParcelpostMutationVariables>(CreateParcelpostDocument, options);
+      }
+export type CreateParcelpostMutationHookResult = ReturnType<typeof useCreateParcelpostMutation>;
+export type CreateParcelpostMutationResult = Apollo.MutationResult<CreateParcelpostMutation>;
+export type CreateParcelpostMutationOptions = Apollo.BaseMutationOptions<CreateParcelpostMutation, CreateParcelpostMutationVariables>;
 export const ParcelpostByCodeDocument = gql`
     query ParcelpostByCode($code: String!) {
   parcelpostByCode(code: $code) {
@@ -307,46 +353,13 @@ export type ParcelpostByCodeQueryHookResult = ReturnType<typeof useParcelpostByC
 export type ParcelpostByCodeLazyQueryHookResult = ReturnType<typeof useParcelpostByCodeLazyQuery>;
 export type ParcelpostByCodeSuspenseQueryHookResult = ReturnType<typeof useParcelpostByCodeSuspenseQuery>;
 export type ParcelpostByCodeQueryResult = Apollo.QueryResult<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>;
-export const NitiReceiverDocument = gql`
-    mutation NitiReceiver($id: ID!) {
-  nitiReceiver(id: $id) {
+export const CustomerReceiverDocument = gql`
+    mutation CustomerReceiver($code: String!) {
+  customerReceiver(code: $code) {
     ...Parcelpost
   }
 }
     ${ParcelpostFragmentDoc}`;
-export type NitiReceiverMutationFn = Apollo.MutationFunction<NitiReceiverMutation, NitiReceiverMutationVariables>;
-
-/**
- * __useNitiReceiverMutation__
- *
- * To run a mutation, you first call `useNitiReceiverMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useNitiReceiverMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [nitiReceiverMutation, { data, loading, error }] = useNitiReceiverMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useNitiReceiverMutation(baseOptions?: Apollo.MutationHookOptions<NitiReceiverMutation, NitiReceiverMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<NitiReceiverMutation, NitiReceiverMutationVariables>(NitiReceiverDocument, options);
-      }
-export type NitiReceiverMutationHookResult = ReturnType<typeof useNitiReceiverMutation>;
-export type NitiReceiverMutationResult = Apollo.MutationResult<NitiReceiverMutation>;
-export type NitiReceiverMutationOptions = Apollo.BaseMutationOptions<NitiReceiverMutation, NitiReceiverMutationVariables>;
-export const CustomerReceiverDocument = gql`
-    mutation CustomerReceiver($id: ID!) {
-  customerReceiver(id: $id) {
-    id
-  }
-}
-    `;
 export type CustomerReceiverMutationFn = Apollo.MutationFunction<CustomerReceiverMutation, CustomerReceiverMutationVariables>;
 
 /**
@@ -362,7 +375,7 @@ export type CustomerReceiverMutationFn = Apollo.MutationFunction<CustomerReceive
  * @example
  * const [customerReceiverMutation, { data, loading, error }] = useCustomerReceiverMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      code: // value for 'code'
  *   },
  * });
  */

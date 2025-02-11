@@ -13,7 +13,7 @@ import { ParcelpostsModule } from './features/parcelposts/parcelposts.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 3308,
+      port: 3306,
       username: 'developer',
       password: 'Dev0ri2022',
       database: 'parcelpost_demo',

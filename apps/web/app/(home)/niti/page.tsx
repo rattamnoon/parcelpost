@@ -1,1 +1,1 @@
-export { ScanQrPage as default } from '@/components/niti/ScanQrPage';
+export { NitiPage as default } from '@/components/niti/NitiPage';

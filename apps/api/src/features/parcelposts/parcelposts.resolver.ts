@@ -64,13 +64,15 @@ export class ParcelpostsResolver {
   }
 
   @Mutation(() => Parcelpost)
-  async nitiReceiver(@Args('id', { type: () => ID }) id: string) {
-    return this.parcelpostsService.nitiReceiver(id);
+  async nitiReceiver(
+    @Args('parcelCode', { type: () => String }) parcelCode: string,
+  ) {
+    return this.parcelpostsService.nitiReceiver(parcelCode);
   }
 
   @Mutation(() => Parcelpost)
-  async customerReceiver(@Args('id', { type: () => ID }) id: string) {
-    return this.parcelpostsService.customerReceiver(id);
+  async customerReceiver(@Args('code', { type: () => String }) code: string) {
+    return this.parcelpostsService.customerReceiver(code);
   }
 
   @ResolveField(() => Locker, { nullable: true })

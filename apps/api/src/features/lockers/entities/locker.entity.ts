@@ -11,6 +11,12 @@ export class Locker {
   @Field(() => String)
   building: string;
 
+  @Field(() => String)
+  size: string;
+
+  @Field(() => String)
+  location: string;
+
   @Field(() => Date)
   createdAt: Date;
 

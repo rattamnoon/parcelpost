@@ -63,8 +63,10 @@ export class ParcelpostsService {
     return this.parcelpostRepository.save(parcelpost);
   }
 
-  async customerReceiver(id: string) {
-    const parcelpost = await this.parcelpostRepository.findOneBy({ id });
+  async customerReceiver(code: string) {
+    const parcelpost = await this.parcelpostRepository.findOne({
+      where: { code },
+    });
 
     parcelpost.customerReceiverDate = dayjs().toDate();
     parcelpost.status = 'รับแล้ว';

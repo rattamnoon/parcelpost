@@ -1,7 +1,7 @@
 'use client';
 
-import { DownOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Flex, Grid, Layout, theme, Typography } from 'antd';
+import { MailOutlined, PhoneOutlined } from '@ant-design/icons';
+import { Flex, Grid, Layout, theme, Typography } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PropsWithChildren } from 'react';

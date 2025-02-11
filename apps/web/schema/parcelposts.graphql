@@ -10,10 +10,23 @@ fragment Parcelpost on Parcelpost {
   lockerId
   createdAt
   updatedAt
+  locker {
+    id
+    code
+    building
+    size
+    location
+  }
 }
 
 query Parcelposts($status: String, $unitCode: String) {
   parcelposts(status: $status, unitCode: $unitCode) {
+    ...Parcelpost
+  }
+}
+
+mutation CreateParcelpost($createParcelpostInput: CreateParcelpostInput!) {
+  createParcelpost(createParcelpostInput: $createParcelpostInput) {
     ...Parcelpost
   }
 }
@@ -24,14 +37,8 @@ query ParcelpostByCode($code: String!) {
   }
 }
 
-mutation NitiReceiver($id: ID!) {
-  nitiReceiver(id: $id) {
+mutation CustomerReceiver($code: String!) {
+  customerReceiver(code: $code) {
     ...Parcelpost
-  }
-}
-
-mutation CustomerReceiver($id: ID!) {
-  customerReceiver(id: $id) {
-    id
   }
 }
