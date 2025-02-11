@@ -1,8 +1,11 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ParcelpostsModule } from './features/parcelposts/parcelposts.module';
 
 @Module({
   imports: [
@@ -17,6 +20,11 @@ import { AppService } from './app.service';
       migrations: [join(__dirname, './database/migrations/**/*{.ts,.js}')],
       synchronize: false,
     }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
+    ParcelpostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

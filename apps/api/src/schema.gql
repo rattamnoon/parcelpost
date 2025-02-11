@@ -1,0 +1,30 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Parcelpost {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Query {
+  parcelposts: [Parcelpost!]!
+  parcelpost(id: Int!): Parcelpost!
+}
+
+type Mutation {
+  createParcelpost(createParcelpostInput: CreateParcelpostInput!): Parcelpost!
+  updateParcelpost(updateParcelpostInput: UpdateParcelpostInput!): Parcelpost!
+  removeParcelpost(id: Int!): Parcelpost!
+}
+
+input CreateParcelpostInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateParcelpostInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
