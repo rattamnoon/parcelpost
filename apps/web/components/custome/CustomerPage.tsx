@@ -1,10 +1,12 @@
 "use client";
 
 import { useParcelpostsQuery } from "@/gql/graphql";
-import { Avatar, Button, Flex, List, Tabs, TabsProps } from "antd";
+import { Avatar, Button, Flex, List, Tabs, TabsProps, Typography } from "antd";
 import React, { useMemo, useState } from "react";
 import { CustomerDetailModal } from "./CustomerDetailModal";
 import { CustomerModal } from "./CustomerModal";
+
+const { Link } = Typography;
 
 export const CustomerPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("รอรับ");
@@ -49,17 +51,17 @@ export const CustomerPage: React.FC = () => {
         />
         {activeTab === "รอรับ" && (
           <List
-            header={<div>พัสดุทั้งหมด</div>}
-            bordered
             dataSource={parcelposts}
             loading={loading}
-            renderItem={(item) => (
+            renderItem={(item, index) => (
               <List.Item>
                 <List.Item.Meta
                   avatar={
-                    <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=0" />
+                    <Avatar
+                      src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
+                    />
                   }
-                  title={<a href="https://ant.design">{item.code}</a>}
+                  title={<Link href="#">{item.code}</Link>}
                   description={`รหัสพัสดุ: ${item.parcelCode}`}
                 />
                 <Button
@@ -77,18 +79,18 @@ export const CustomerPage: React.FC = () => {
         )}
         {activeTab === "รับแล้ว" && (
           <List
-            header={<div>พัสดุทั้งหมด</div>}
-            bordered
             dataSource={parcelposts}
             loading={loading}
-            renderItem={(item) => (
+            renderItem={(item, index) => (
               <List.Item>
                 <List.Item.Meta
                   avatar={
-                    <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=0" />
+                    <Avatar
+                      src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
+                    />
                   }
-                  title={<a href="https://ant.design">{item.code}</a>}
-                  description={item.parcelCode}
+                  title={<Link href="#">{item.code}</Link>}
+                  description={`รหัสพัสดุ: ${item.parcelCode}`}
                 />
                 <Button
                   type="link"
