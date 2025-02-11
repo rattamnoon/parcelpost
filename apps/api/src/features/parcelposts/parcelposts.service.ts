@@ -26,7 +26,7 @@ export class ParcelpostsService {
       },
     });
 
-    const code = `P-${dayjs().format('DDMMYYYY')}-${lastCode.toString().padStart(5, '0')}`;
+    const code = `P-${dayjs().format('DDMMYYYY')}-${(lastCode + 1).toString().padStart(5, '0')}`;
 
     return code;
   }
@@ -82,10 +82,11 @@ export class ParcelpostsService {
     return this.parcelpostRepository.save(parcelpost);
   }
 
-  async findAll(status: string) {
+  async findAll(status: string, unitCode: string) {
     return this.parcelpostRepository.find({
       where: {
         ...(status ? { status } : {}),
+        ...(unitCode ? { unitCode } : {}),
       },
     });
   }
