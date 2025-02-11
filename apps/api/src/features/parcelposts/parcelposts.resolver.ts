@@ -44,8 +44,10 @@ export class ParcelpostsResolver {
   }
 
   @Mutation(() => Parcelpost)
-  async nitiReceiver(@Args('id', { type: () => ID }) id: string) {
-    return this.parcelpostsService.nitiReceiver(id);
+  async nitiReceiver(
+    @Args('parcelCode', { type: () => String }) parcelCode: string,
+  ) {
+    return this.parcelpostsService.nitiReceiver(parcelCode);
   }
 
   @Mutation(() => Parcelpost)

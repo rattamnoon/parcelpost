@@ -51,7 +51,7 @@ type Mutation {
   createParcelpost(createParcelpostInput: CreateParcelpostInput!): Parcelpost!
   updateParcelpost(updateParcelpostInput: UpdateParcelpostInput!): Parcelpost!
   removeParcelpost(id: ID!): Parcelpost!
-  nitiReceiver(id: ID!): Parcelpost!
+  nitiReceiver(parcelCode: String!): Parcelpost!
   customerReceiver(id: ID!): Parcelpost!
   createLocker(createLockerInput: CreateLockerInput!): Locker!
   updateLocker(updateLockerInput: UpdateLockerInput!): Locker!

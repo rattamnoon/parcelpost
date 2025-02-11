@@ -18,6 +18,11 @@ query Parcelposts($status: String, $unitCode: String) {
   }
 }
 
+mutation CreateParcelpost($createParcelpostInput: CreateParcelpostInput!) {
+  createParcelpost(createParcelpostInput: $createParcelpostInput) {
+    ...Parcelpost
+  }
+}
 
 mutation NitiReceiver($id: ID!) {
   nitiReceiver(id: $id) {

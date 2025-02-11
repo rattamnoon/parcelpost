@@ -3,6 +3,7 @@
 import { IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
 import { Modal } from 'antd';
 import { useState } from 'react';
+import { useNitiReceiverMutation } from '@/gql/graphql';
 
 export const IncomingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

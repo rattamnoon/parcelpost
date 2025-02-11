@@ -16,10 +16,10 @@ import {
   TabsProps,
   Typography,
 } from 'antd';
-import React, { useMemo, useState } from 'react';
 import { useRouter } from 'nextjs-toploader/app';
+import React, { useMemo, useState } from 'react';
 
-export const NitiPage = () => {
+export const NitiPage: React.FC = () => {
   const router = useRouter();
   const [api, contextHolder] = Modal.useModal();
   const [activeTab, setActiveTab] = useState<string>('ยังไม่รับ');
@@ -38,8 +38,6 @@ export const NitiPage = () => {
       },
     ],
   });
-
-  console.log(customerReceiver);
 
   const parcelposts = useMemo(() => data?.parcelposts ?? [], [data]);
 
@@ -71,18 +69,18 @@ export const NitiPage = () => {
   return (
     <>
       {contextHolder}
-      <Flex justify="space-between" align="center">
-        <Typography.Title level={3}>ระบบรับพัสดุ</Typography.Title>
-        <Space>
-          <Button onClick={() => router.push('/niti/incoming')}>
-            รับพัสดุ
-          </Button>
-          <Button onClick={() => router.push('/niti/delivery')}>
-            ส่งพัสดุ
-          </Button>
-        </Space>
-      </Flex>
       <Flex gap={16} vertical>
+        <Flex justify="space-between" align="center">
+          <Typography.Title level={3}>ระบบรับพัสดุ</Typography.Title>
+          <Space>
+            <Button onClick={() => router.push('/niti/incoming')}>
+              รับพัสดุ
+            </Button>
+            <Button onClick={() => router.push('/niti/delivery')}>
+              ส่งพัสดุ
+            </Button>
+          </Space>
+        </Flex>
         <Tabs
           defaultActiveKey="1"
           items={items}
