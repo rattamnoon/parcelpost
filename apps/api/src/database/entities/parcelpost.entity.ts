@@ -27,6 +27,9 @@ export class ParcelPost {
   @Column({ comment: 'ห้อง', nullable: true })
   unitCode: string;
 
+  @Column({ comment: 'สถานะพัสดุ', default: 'ส่งสำเร็จ' })
+  status: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
