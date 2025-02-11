@@ -57,8 +57,12 @@ export class ParcelpostsService {
     return this.parcelpostRepository.save(parcelpost);
   }
 
-  async findAll() {
-    return this.parcelpostRepository.find();
+  async findAll(status: string) {
+    return this.parcelpostRepository.find({
+      where: {
+        ...(status ? { status } : {}),
+      },
+    });
   }
 
   async findOne(id: string) {

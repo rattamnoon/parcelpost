@@ -12,8 +12,8 @@ fragment Parcelpost on Parcelpost {
   updatedAt
 }
 
-query Parcelposts {
-  parcelposts {
+query Parcelposts($status: String) {
+  parcelposts(status: $status) {
     ...Parcelpost
   }
 }

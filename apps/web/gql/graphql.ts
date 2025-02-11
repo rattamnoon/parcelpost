@@ -142,6 +142,11 @@ export type QueryParcelpostArgs = {
   id: Scalars['ID']['input'];
 };
 
+
+export type QueryParcelpostsArgs = {
+  status?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateLockerInput = {
   building?: InputMaybe<Scalars['String']['input']>;
   code?: InputMaybe<Scalars['String']['input']>;
@@ -170,7 +175,9 @@ export type UpdateParcelpostInput = {
 
 export type ParcelpostFragment = { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any };
 
-export type ParcelpostsQueryVariables = Exact<{ [key: string]: never; }>;
+export type ParcelpostsQueryVariables = Exact<{
+  status?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
 export type ParcelpostsQuery = { __typename?: 'Query', parcelposts: Array<{ __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any }> };
@@ -204,8 +211,8 @@ export const ParcelpostFragmentDoc = gql`
 }
     `;
 export const ParcelpostsDocument = gql`
-    query Parcelposts {
-  parcelposts {
+    query Parcelposts($status: String) {
+  parcelposts(status: $status) {
     ...Parcelpost
   }
 }
@@ -223,6 +230,7 @@ export const ParcelpostsDocument = gql`
  * @example
  * const { data, loading, error } = useParcelpostsQuery({
  *   variables: {
+ *      status: // value for 'status'
  *   },
  * });
  */
