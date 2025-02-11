@@ -33,6 +33,12 @@ export class ParcelPost {
   @Column({ comment: 'สถานะพัสดุ', default: 'ส่งสำเร็จ' })
   status: string;
 
+  @Column({ comment: 'วันที่ส่ง', nullable: true })
+  nitiReceiverDate: Date;
+
+  @Column({ comment: 'วันที่รับ', nullable: true })
+  customerReceiverDate: Date;
+
   @CreateDateColumn()
   createdAt: Date;
 

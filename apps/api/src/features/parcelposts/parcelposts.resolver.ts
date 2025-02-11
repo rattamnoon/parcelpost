@@ -39,4 +39,14 @@ export class ParcelpostsResolver {
   async removeParcelpost(@Args('id', { type: () => ID }) id: string) {
     return this.parcelpostsService.remove(id);
   }
+
+  @Mutation(() => Parcelpost)
+  async nitiReceiver(@Args('id', { type: () => ID }) id: string) {
+    return this.parcelpostsService.nitiReceiver(id);
+  }
+
+  @Mutation(() => Parcelpost)
+  async customerReceiver(@Args('id', { type: () => ID }) id: string) {
+    return this.parcelpostsService.customerReceiver(id);
+  }
 }

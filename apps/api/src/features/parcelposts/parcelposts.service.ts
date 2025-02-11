@@ -39,6 +39,24 @@ export class ParcelpostsService {
     return this.parcelpostRepository.save(createParcelpost);
   }
 
+  async nitiReceiver(id: string) {
+    const parcelpost = await this.parcelpostRepository.findOneBy({ id });
+
+    parcelpost.nitiReceiverDate = dayjs().toDate();
+    parcelpost.status = 'นิติรับแล้ว';
+
+    return this.parcelpostRepository.save(parcelpost);
+  }
+
+  async customerReceiver(id: string) {
+    const parcelpost = await this.parcelpostRepository.findOneBy({ id });
+
+    parcelpost.customerReceiverDate = dayjs().toDate();
+    parcelpost.status = 'รับแล้ว';
+
+    return this.parcelpostRepository.save(parcelpost);
+  }
+
   async findAll() {
     return this.parcelpostRepository.find();
   }
