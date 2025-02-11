@@ -38,6 +38,7 @@ type Parcelpost {
   customerReceiverDate: DateTime
   createdAt: DateTime!
   updatedAt: DateTime!
+  locker: Locker
 }
 
 type Query {

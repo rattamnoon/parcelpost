@@ -41,6 +41,8 @@ export const CustomerPage: React.FC = () => {
       onOk: async () => {
         await customerReceiver({ variables: { id } });
       },
+      okText: "ยืนยัน",
+      cancelText: "ยกเลิก",
     });
   };
 

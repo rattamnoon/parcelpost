@@ -88,6 +88,7 @@ export class ParcelpostsService {
         ...(status ? { status } : {}),
         ...(unitCode ? { unitCode } : {}),
       },
+      relations: { locker: true },
     });
   }
 
