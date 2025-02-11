@@ -1,3 +1,4 @@
+import { Locker } from '@/database/entities/locker.entity';
 import { ParcelPost } from '@/database/entities/parcelpost.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,6 +12,8 @@ export class ParcelpostsService {
   constructor(
     @InjectRepository(ParcelPost)
     private parcelpostRepository: Repository<ParcelPost>,
+    @InjectRepository(Locker)
+    private lockerRepository: Repository<Locker>,
   ) {}
 
   async generateCode(): Promise<string> {
@@ -35,6 +38,17 @@ export class ParcelpostsService {
       ...createParcelpostInput,
       code,
     });
+
+    const locker = await this.lockerRepository.findOne({
+      where: { lock: false },
+      order: { id: 'ASC' },
+    });
+
+    if (locker) {
+      locker.lock = true;
+
+      await this.lockerRepository.save(locker);
+    }
 
     return this.parcelpostRepository.save(createParcelpost);
   }

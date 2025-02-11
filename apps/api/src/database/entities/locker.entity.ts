@@ -26,6 +26,9 @@ export class Locker {
   @Column({ comment: 'สถานที่', nullable: true })
   location: string;
 
+  @Column({ comment: 'สถานะ', default: false })
+  lock: boolean;
+
   @OneToMany(() => ParcelPost, (parcelPost) => parcelPost.locker)
   parcelPosts: ParcelPost[];
 
