@@ -28,10 +28,14 @@
     "seed": "ts-node -P tsconfig-seed.json ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./data-source.seed.ts"
   },
   "dependencies": {
+    "@apollo/server": "^4.11.3",
+    "@nestjs/apollo": "^13.0.2",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/graphql": "^13.0.2",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^11.0.0",
+    "graphql": "^16.10.0",
     "mysql2": "^3.12.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
