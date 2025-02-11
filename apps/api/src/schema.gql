@@ -4,10 +4,10 @@
 
 type Locker {
   id: Int!
-  code: String!
-  building: String!
-  size: String!
-  location: String!
+  code: String
+  building: String
+  size: String
+  location: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -57,6 +57,7 @@ type Mutation {
   removeParcelpost(id: ID!): Parcelpost!
   nitiReceiver(parcelCode: String!): Parcelpost!
   customerReceiver(code: String!): Parcelpost!
+  errorReceiver(code: String!): Parcelpost!
   createLocker(createLockerInput: CreateLockerInput!): Locker!
   updateLocker(updateLockerInput: UpdateLockerInput!): Locker!
   removeLocker(id: Int!): Locker!
@@ -107,10 +108,10 @@ input UpdateParcelpostInput {
 }
 
 input CreateLockerInput {
-  code: String!
-  building: String!
-  size: String!
-  location: String!
+  code: String
+  building: String
+  size: String
+  location: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }

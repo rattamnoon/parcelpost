@@ -42,3 +42,9 @@ mutation CustomerReceiver($code: String!) {
     ...Parcelpost
   }
 }
+
+mutation ErrorReceiver($code: String!) {
+  errorReceiver(code: $code) {
+    ...Parcelpost
+  }
+}

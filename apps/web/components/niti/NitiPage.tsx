@@ -22,7 +22,7 @@ import React, { useMemo, useState } from 'react';
 export const NitiPage: React.FC = () => {
   const router = useRouter();
   const [api, contextHolder] = Modal.useModal();
-  const [activeTab, setActiveTab] = useState<string>('ยังไม่รับ');
+  const [activeTab, setActiveTab] = useState<string>('รอรับ');
 
   const { data, loading } = useParcelpostsQuery({
     variables: {
@@ -50,19 +50,23 @@ export const NitiPage: React.FC = () => {
       title: 'ยืนยันการรับพัสดุ',
       content: 'คุณยืนยันการรับพัสดุหรือไม่?',
       onOk: async () => {
-        await customerReceiver({ variables: { id } });
+        await customerReceiver({ variables: { code: id } });
       },
     });
   };
 
   const items: TabsProps['items'] = [
     {
-      key: 'ยังไม่รับ',
-      label: 'ยังไม่รับ',
+      key: 'รอรับ',
+      label: 'รอรับ',
     },
     {
       key: 'รับแล้ว',
       label: 'รับแล้ว',
+    },
+    {
+      key: 'ปัญหา',
+      label: 'ปัญหา',
     },
   ];
 
@@ -77,7 +81,7 @@ export const NitiPage: React.FC = () => {
               รับพัสดุ
             </Button>
             <Button onClick={() => router.push('/niti/delivery')}>
-              ส่งพัสดุ
+              ลูกบ้านรับพัสดุ
             </Button>
           </Space>
         </Flex>
@@ -87,7 +91,7 @@ export const NitiPage: React.FC = () => {
           onChange={onChange}
           activeKey={activeTab}
         />
-        {activeTab === 'ยังไม่รับ' && (
+        {activeTab === 'รอรับ' && (
           <List
             header={<div>พัสดุทั้งหมด</div>}
             bordered
@@ -104,7 +108,7 @@ export const NitiPage: React.FC = () => {
                 />
                 <Button
                   type="link"
-                  onClick={() => handleCustomerReceiver(item.id)}
+                  onClick={() => handleCustomerReceiver(item.code)}
                 >
                   รับพัสดุ
                 </Button>
@@ -134,6 +138,31 @@ export const NitiPage: React.FC = () => {
                   }}
                 >
                   ดูรายละเอียด
+                </Button>
+              </List.Item>
+            )}
+          />
+        )}
+        {activeTab === 'ปัญหา' && (
+          <List
+            header={<div>พัสดุทั้งหมด</div>}
+            bordered
+            dataSource={parcelposts}
+            loading={loading}
+            renderItem={(item) => (
+              <List.Item>
+                <List.Item.Meta
+                  avatar={
+                    <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=0" />
+                  }
+                  title={<a href="https://ant.design">{item.code}</a>}
+                  description={item.parcelCode}
+                />
+                <Button
+                  type="link"
+                  onClick={() => handleCustomerReceiver(item.code)}
+                >
+                  รับพัสดุ
                 </Button>
               </List.Item>
             )}

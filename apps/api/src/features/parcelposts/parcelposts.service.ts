@@ -63,6 +63,16 @@ export class ParcelpostsService {
     return this.parcelpostRepository.save(parcelpost);
   }
 
+  async errorReceiver(code: string) {
+    const parcelpost = await this.parcelpostRepository.findOne({
+      where: { code },
+    });
+
+    parcelpost.status = 'ปัญหา';
+
+    return this.parcelpostRepository.save(parcelpost);
+  }
+
   async customerReceiver(code: string) {
     const parcelpost = await this.parcelpostRepository.findOne({
       where: { code },

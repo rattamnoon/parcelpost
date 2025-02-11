@@ -19,11 +19,11 @@ export type Scalars = {
 };
 
 export type CreateLockerInput = {
-  building: Scalars['String']['input'];
-  code: Scalars['String']['input'];
+  building?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
   createdAt: Scalars['DateTime']['input'];
-  location: Scalars['String']['input'];
-  size: Scalars['String']['input'];
+  location?: InputMaybe<Scalars['String']['input']>;
+  size?: InputMaybe<Scalars['String']['input']>;
   updatedAt: Scalars['DateTime']['input'];
 };
 
@@ -45,12 +45,12 @@ export type CreateParcelpostInput = {
 
 export type Locker = {
   __typename?: 'Locker';
-  building: Scalars['String']['output'];
-  code: Scalars['String']['output'];
+  building?: Maybe<Scalars['String']['output']>;
+  code?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
-  location: Scalars['String']['output'];
-  size: Scalars['String']['output'];
+  location?: Maybe<Scalars['String']['output']>;
+  size?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['DateTime']['output'];
 };
 
@@ -60,6 +60,7 @@ export type Mutation = {
   createMasterLocker: Array<Locker>;
   createParcelpost: Parcelpost;
   customerReceiver: Parcelpost;
+  errorReceiver: Parcelpost;
   nitiReceiver: Parcelpost;
   removeLocker: Locker;
   removeParcelpost: Parcelpost;
@@ -79,6 +80,11 @@ export type MutationCreateParcelpostArgs = {
 
 
 export type MutationCustomerReceiverArgs = {
+  code: Scalars['String']['input'];
+};
+
+
+export type MutationErrorReceiverArgs = {
   code: Scalars['String']['input'];
 };
 
@@ -187,7 +193,7 @@ export type UpdateParcelpostInput = {
   unitCode?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type ParcelpostFragment = { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null };
+export type ParcelpostFragment = { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code?: string | null, building?: string | null, size?: string | null, location?: string | null } | null };
 
 export type ParcelpostsQueryVariables = Exact<{
   status?: InputMaybe<Scalars['String']['input']>;
@@ -195,28 +201,35 @@ export type ParcelpostsQueryVariables = Exact<{
 }>;
 
 
-export type ParcelpostsQuery = { __typename?: 'Query', parcelposts: Array<{ __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null }> };
+export type ParcelpostsQuery = { __typename?: 'Query', parcelposts: Array<{ __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code?: string | null, building?: string | null, size?: string | null, location?: string | null } | null }> };
 
 export type CreateParcelpostMutationVariables = Exact<{
   createParcelpostInput: CreateParcelpostInput;
 }>;
 
 
-export type CreateParcelpostMutation = { __typename?: 'Mutation', createParcelpost: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null } };
+export type CreateParcelpostMutation = { __typename?: 'Mutation', createParcelpost: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code?: string | null, building?: string | null, size?: string | null, location?: string | null } | null } };
 
 export type ParcelpostByCodeQueryVariables = Exact<{
   code: Scalars['String']['input'];
 }>;
 
 
-export type ParcelpostByCodeQuery = { __typename?: 'Query', parcelpostByCode: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null } };
+export type ParcelpostByCodeQuery = { __typename?: 'Query', parcelpostByCode: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code?: string | null, building?: string | null, size?: string | null, location?: string | null } | null } };
 
 export type CustomerReceiverMutationVariables = Exact<{
   code: Scalars['String']['input'];
 }>;
 
 
-export type CustomerReceiverMutation = { __typename?: 'Mutation', customerReceiver: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null } };
+export type CustomerReceiverMutation = { __typename?: 'Mutation', customerReceiver: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code?: string | null, building?: string | null, size?: string | null, location?: string | null } | null } };
+
+export type ErrorReceiverMutationVariables = Exact<{
+  code: Scalars['String']['input'];
+}>;
+
+
+export type ErrorReceiverMutation = { __typename?: 'Mutation', errorReceiver: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code?: string | null, building?: string | null, size?: string | null, location?: string | null } | null } };
 
 export const ParcelpostFragmentDoc = gql`
     fragment Parcelpost on Parcelpost {
@@ -386,3 +399,36 @@ export function useCustomerReceiverMutation(baseOptions?: Apollo.MutationHookOpt
 export type CustomerReceiverMutationHookResult = ReturnType<typeof useCustomerReceiverMutation>;
 export type CustomerReceiverMutationResult = Apollo.MutationResult<CustomerReceiverMutation>;
 export type CustomerReceiverMutationOptions = Apollo.BaseMutationOptions<CustomerReceiverMutation, CustomerReceiverMutationVariables>;
+export const ErrorReceiverDocument = gql`
+    mutation ErrorReceiver($code: String!) {
+  errorReceiver(code: $code) {
+    ...Parcelpost
+  }
+}
+    ${ParcelpostFragmentDoc}`;
+export type ErrorReceiverMutationFn = Apollo.MutationFunction<ErrorReceiverMutation, ErrorReceiverMutationVariables>;
+
+/**
+ * __useErrorReceiverMutation__
+ *
+ * To run a mutation, you first call `useErrorReceiverMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useErrorReceiverMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [errorReceiverMutation, { data, loading, error }] = useErrorReceiverMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useErrorReceiverMutation(baseOptions?: Apollo.MutationHookOptions<ErrorReceiverMutation, ErrorReceiverMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ErrorReceiverMutation, ErrorReceiverMutationVariables>(ErrorReceiverDocument, options);
+      }
+export type ErrorReceiverMutationHookResult = ReturnType<typeof useErrorReceiverMutation>;
+export type ErrorReceiverMutationResult = Apollo.MutationResult<ErrorReceiverMutation>;
+export type ErrorReceiverMutationOptions = Apollo.BaseMutationOptions<ErrorReceiverMutation, ErrorReceiverMutationVariables>;

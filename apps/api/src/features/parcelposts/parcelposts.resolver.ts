@@ -75,6 +75,11 @@ export class ParcelpostsResolver {
     return this.parcelpostsService.customerReceiver(code);
   }
 
+  @Mutation(() => Parcelpost)
+  async errorReceiver(@Args('code', { type: () => String }) code: string) {
+    return this.parcelpostsService.errorReceiver(code);
+  }
+
   @ResolveField(() => Locker, { nullable: true })
   async locker(@Root() { lockerId }: Parcelpost) {
     return lockerId ? this.lockerRepository.findOneBy({ id: lockerId }) : null;

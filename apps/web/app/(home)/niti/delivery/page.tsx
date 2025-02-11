@@ -1,3 +1,3 @@
 'use client';
 
-export { IncomingPage as default } from '@/components/niti/IncomingPage';
+export { DeliveryPage as default } from '@/components/niti/DeliveryPage';

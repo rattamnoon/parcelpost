@@ -5,16 +5,16 @@ export class Locker {
   @Field(() => Int)
   id: number;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   code: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   building: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   size: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   location: string;
 
   @Field(() => Date)
