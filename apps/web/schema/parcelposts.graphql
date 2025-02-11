@@ -15,6 +15,7 @@ fragment Parcelpost on Parcelpost {
     code
     building
     size
+    location
   }
 }
 
@@ -26,6 +27,12 @@ query Parcelposts($status: String, $unitCode: String) {
 
 mutation CreateParcelpost($createParcelpostInput: CreateParcelpostInput!) {
   createParcelpost(createParcelpostInput: $createParcelpostInput) {
+    ...Parcelpost
+  }
+}
+
+query ParcelpostByCode($code: String!) {
+  parcelpostByCode(code: $code) {
     ...Parcelpost
   }
 }

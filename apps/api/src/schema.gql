@@ -6,6 +6,8 @@ type Locker {
   id: Int!
   code: String!
   building: String!
+  size: String!
+  location: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -44,6 +46,7 @@ type Parcelpost {
 type Query {
   parcelposts(status: String, unitCode: String): [Parcelpost!]!
   parcelpost(id: ID!): Parcelpost!
+  parcelpostByCode(code: String!): Parcelpost!
   lockers: [Locker!]!
   locker(id: Int!): Locker!
 }
@@ -106,6 +109,8 @@ input UpdateParcelpostInput {
 input CreateLockerInput {
   code: String!
   building: String!
+  size: String!
+  location: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -113,6 +118,8 @@ input CreateLockerInput {
 input UpdateLockerInput {
   code: String
   building: String
+  size: String
+  location: String
   createdAt: DateTime
   updatedAt: DateTime
   id: Int!

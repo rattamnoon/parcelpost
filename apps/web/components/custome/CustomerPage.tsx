@@ -1,31 +1,24 @@
 "use client";
 
-import {
-  ParcelpostsDocument,
-  useCustomerReceiverMutation,
-  useParcelpostsQuery,
-} from "@/gql/graphql";
-import { Avatar, Button, Flex, List, Modal, Tabs, TabsProps } from "antd";
+import { useParcelpostsQuery } from "@/gql/graphql";
+import { Avatar, Button, Flex, List, Tabs, TabsProps } from "antd";
 import React, { useMemo, useState } from "react";
+import { CustomerDetailModal } from "./CustomerDetailModal";
+import { CustomerModal } from "./CustomerModal";
 
 export const CustomerPage: React.FC = () => {
-  const [api, contextHolder] = Modal.useModal();
-  const [activeTab, setActiveTab] = useState<string>("ยังไม่รับ");
+  const [activeTab, setActiveTab] = useState<string>("รอรับ");
+  const [code, setCode] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+  const [detailOpen, setDetailOpen] = useState<boolean>(false);
+  const [detailCode, setDetailCode] = useState<string>("");
 
   const { data, loading } = useParcelpostsQuery({
     variables: {
       status: activeTab,
       unitCode: "2001",
     },
-  });
-
-  const [customerReceiver] = useCustomerReceiverMutation({
-    refetchQueries: [
-      {
-        query: ParcelpostsDocument,
-        variables: { status: activeTab },
-      },
-    ],
+    pollInterval: 1000,
   });
 
   const parcelposts = useMemo(() => data?.parcelposts ?? [], [data]);
@@ -34,22 +27,10 @@ export const CustomerPage: React.FC = () => {
     setActiveTab(key);
   };
 
-  const handleCustomerReceiver = async (id: string) => {
-    await api.confirm({
-      title: "ยืนยันการรับพัสดุ",
-      content: "คุณยืนยันการรับพัสดุหรือไม่?",
-      onOk: async () => {
-        await customerReceiver({ variables: { id } });
-      },
-      okText: "ยืนยัน",
-      cancelText: "ยกเลิก",
-    });
-  };
-
   const items: TabsProps["items"] = [
     {
-      key: "ยังไม่รับ",
-      label: "ยังไม่รับ",
+      key: "รอรับ",
+      label: "รอรับ",
     },
     {
       key: "รับแล้ว",
@@ -59,7 +40,6 @@ export const CustomerPage: React.FC = () => {
 
   return (
     <>
-      {contextHolder}
       <Flex gap={16} vertical>
         <Tabs
           defaultActiveKey="1"
@@ -67,7 +47,7 @@ export const CustomerPage: React.FC = () => {
           onChange={onChange}
           activeKey={activeTab}
         />
-        {activeTab === "ยังไม่รับ" && (
+        {activeTab === "รอรับ" && (
           <List
             header={<div>พัสดุทั้งหมด</div>}
             bordered
@@ -80,11 +60,14 @@ export const CustomerPage: React.FC = () => {
                     <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=0" />
                   }
                   title={<a href="https://ant.design">{item.code}</a>}
-                  description={item.parcelCode}
+                  description={`รหัสพัสดุ: ${item.parcelCode}`}
                 />
                 <Button
                   type="link"
-                  onClick={() => handleCustomerReceiver(item.id)}
+                  onClick={() => {
+                    setCode(item.code);
+                    setOpen(true);
+                  }}
                 >
                   รับพัสดุ
                 </Button>
@@ -110,7 +93,8 @@ export const CustomerPage: React.FC = () => {
                 <Button
                   type="link"
                   onClick={() => {
-                    console.log(item);
+                    setDetailOpen(true);
+                    setDetailCode(item.code);
                   }}
                 >
                   ดูรายละเอียด
@@ -120,6 +104,12 @@ export const CustomerPage: React.FC = () => {
           />
         )}
       </Flex>
+      <CustomerModal open={open} onCancel={() => setOpen(false)} code={code} />
+      <CustomerDetailModal
+        open={detailOpen}
+        onCancel={() => setDetailOpen(false)}
+        code={detailCode}
+      />
     </>
   );
 };

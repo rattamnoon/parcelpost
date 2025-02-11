@@ -22,6 +22,8 @@ export type CreateLockerInput = {
   building: Scalars['String']['input'];
   code: Scalars['String']['input'];
   createdAt: Scalars['DateTime']['input'];
+  location: Scalars['String']['input'];
+  size: Scalars['String']['input'];
   updatedAt: Scalars['DateTime']['input'];
 };
 
@@ -47,6 +49,8 @@ export type Locker = {
   code: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
+  location: Scalars['String']['output'];
+  size: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
 };
 
@@ -130,6 +134,7 @@ export type Query = {
   locker: Locker;
   lockers: Array<Locker>;
   parcelpost: Parcelpost;
+  parcelpostByCode: Parcelpost;
   parcelposts: Array<Parcelpost>;
 };
 
@@ -144,6 +149,11 @@ export type QueryParcelpostArgs = {
 };
 
 
+export type QueryParcelpostByCodeArgs = {
+  code: Scalars['String']['input'];
+};
+
+
 export type QueryParcelpostsArgs = {
   status?: InputMaybe<Scalars['String']['input']>;
   unitCode?: InputMaybe<Scalars['String']['input']>;
@@ -154,6 +164,8 @@ export type UpdateLockerInput = {
   code?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   id: Scalars['Int']['input'];
+  location?: InputMaybe<Scalars['String']['input']>;
+  size?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -175,7 +187,7 @@ export type UpdateParcelpostInput = {
   unitCode?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type ParcelpostFragment = { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, building: string } | null };
+export type ParcelpostFragment = { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null };
 
 export type ParcelpostsQueryVariables = Exact<{
   status?: InputMaybe<Scalars['String']['input']>;
@@ -183,21 +195,28 @@ export type ParcelpostsQueryVariables = Exact<{
 }>;
 
 
-export type ParcelpostsQuery = { __typename?: 'Query', parcelposts: Array<{ __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, building: string } | null }> };
+export type ParcelpostsQuery = { __typename?: 'Query', parcelposts: Array<{ __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null }> };
 
 export type CreateParcelpostMutationVariables = Exact<{
   createParcelpostInput: CreateParcelpostInput;
 }>;
 
 
-export type CreateParcelpostMutation = { __typename?: 'Mutation', createParcelpost: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, building: string } | null } };
+export type CreateParcelpostMutation = { __typename?: 'Mutation', createParcelpost: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null } };
+
+export type ParcelpostByCodeQueryVariables = Exact<{
+  code: Scalars['String']['input'];
+}>;
+
+
+export type ParcelpostByCodeQuery = { __typename?: 'Query', parcelpostByCode: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null } };
 
 export type CustomerReceiverMutationVariables = Exact<{
   code: Scalars['String']['input'];
 }>;
 
 
-export type CustomerReceiverMutation = { __typename?: 'Mutation', customerReceiver: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, building: string } | null } };
+export type CustomerReceiverMutation = { __typename?: 'Mutation', customerReceiver: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, code: string, building: string, size: string, location: string } | null } };
 
 export const ParcelpostFragmentDoc = gql`
     fragment Parcelpost on Parcelpost {
@@ -213,7 +232,10 @@ export const ParcelpostFragmentDoc = gql`
   updatedAt
   locker {
     id
+    code
     building
+    size
+    location
   }
 }
     `;
@@ -291,6 +313,46 @@ export function useCreateParcelpostMutation(baseOptions?: Apollo.MutationHookOpt
 export type CreateParcelpostMutationHookResult = ReturnType<typeof useCreateParcelpostMutation>;
 export type CreateParcelpostMutationResult = Apollo.MutationResult<CreateParcelpostMutation>;
 export type CreateParcelpostMutationOptions = Apollo.BaseMutationOptions<CreateParcelpostMutation, CreateParcelpostMutationVariables>;
+export const ParcelpostByCodeDocument = gql`
+    query ParcelpostByCode($code: String!) {
+  parcelpostByCode(code: $code) {
+    ...Parcelpost
+  }
+}
+    ${ParcelpostFragmentDoc}`;
+
+/**
+ * __useParcelpostByCodeQuery__
+ *
+ * To run a query within a React component, call `useParcelpostByCodeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useParcelpostByCodeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useParcelpostByCodeQuery({
+ *   variables: {
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useParcelpostByCodeQuery(baseOptions: Apollo.QueryHookOptions<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables> & ({ variables: ParcelpostByCodeQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>(ParcelpostByCodeDocument, options);
+      }
+export function useParcelpostByCodeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>(ParcelpostByCodeDocument, options);
+        }
+export function useParcelpostByCodeSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>(ParcelpostByCodeDocument, options);
+        }
+export type ParcelpostByCodeQueryHookResult = ReturnType<typeof useParcelpostByCodeQuery>;
+export type ParcelpostByCodeLazyQueryHookResult = ReturnType<typeof useParcelpostByCodeLazyQuery>;
+export type ParcelpostByCodeSuspenseQueryHookResult = ReturnType<typeof useParcelpostByCodeSuspenseQuery>;
+export type ParcelpostByCodeQueryResult = Apollo.QueryResult<ParcelpostByCodeQuery, ParcelpostByCodeQueryVariables>;
 export const CustomerReceiverDocument = gql`
     mutation CustomerReceiver($code: String!) {
   customerReceiver(code: $code) {

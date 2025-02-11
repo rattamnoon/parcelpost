@@ -98,6 +98,10 @@ export class ParcelpostsService {
     return this.parcelpostRepository.findOneBy({ id });
   }
 
+  async findOneByCode(code: string) {
+    return this.parcelpostRepository.findOneBy({ code });
+  }
+
   async update(id: string, updateParcelpostInput: UpdateParcelpostInput) {
     return this.parcelpostRepository.update(id, updateParcelpostInput);
   }
