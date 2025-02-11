@@ -36,11 +36,17 @@ export class LockersService {
     return this.lockerRepository.softDelete(id);
   }
 
+  randomSize(): string {
+    const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+    return sizes[Math.floor(Math.random() * sizes.length)].toString();
+  }
+
   async master() {
     const arrs = Array.from({ length: 20 }, (_, i) => i + 1);
     const masters = arrs.map((arr) => ({
       code: `L-0001`.slice(0, 2) + arr.toString().padStart(2, '0'),
       building: 'A',
+      size: this.randomSize(),
     }));
 
     return this.lockerRepository.save(masters);

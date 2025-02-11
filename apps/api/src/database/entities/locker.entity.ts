@@ -17,8 +17,14 @@ export class Locker {
   @Column({ comment: 'รหัสตู้' })
   code: string;
 
-  @Column({ comment: 'ตึก' })
+  @Column({ comment: 'ตึก', nullable: true })
   building: string;
+
+  @Column({ comment: 'ไซส์', nullable: true })
+  size: string;
+
+  @Column({ comment: 'สถานที่', nullable: true })
+  location: string;
 
   @OneToMany(() => ParcelPost, (parcelPost) => parcelPost.locker)
   parcelPosts: ParcelPost[];
