@@ -6,6 +6,7 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ParcelpostsModule } from './features/parcelposts/parcelposts.module';
+import { LockersModule } from './features/lockers/lockers.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ParcelpostsModule } from './features/parcelposts/parcelposts.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     ParcelpostsModule,
+    LockersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

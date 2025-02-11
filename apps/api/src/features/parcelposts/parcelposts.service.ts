@@ -1,26 +1,38 @@
+import { ParcelPost } from '@/database/entities/parcelpost.entity';
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateParcelpostInput } from './dto/create-parcelpost.input';
 import { UpdateParcelpostInput } from './dto/update-parcelpost.input';
 
 @Injectable()
 export class ParcelpostsService {
-  create(createParcelpostInput: CreateParcelpostInput) {
-    return 'This action adds a new parcelpost';
+  constructor(
+    @InjectRepository(ParcelPost)
+    private parcelpostRepository: Repository<ParcelPost>,
+  ) {}
+
+  async create(createParcelpostInput: CreateParcelpostInput) {
+    const createParcelpost = this.parcelpostRepository.create({
+      ...createParcelpostInput,
+    });
+
+    return this.parcelpostRepository.save(createParcelpost);
   }
 
-  findAll() {
-    return `This action returns all parcelposts`;
+  async findAll() {
+    return this.parcelpostRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} parcelpost`;
+  async findOne(id: string) {
+    return this.parcelpostRepository.findOneBy({ id });
   }
 
-  update(id: number, updateParcelpostInput: UpdateParcelpostInput) {
-    return `This action updates a #${id} parcelpost`;
+  async update(id: string, updateParcelpostInput: UpdateParcelpostInput) {
+    return this.parcelpostRepository.update(id, updateParcelpostInput);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} parcelpost`;
+  async remove(id: string) {
+    return this.parcelpostRepository.softDelete(id);
   }
 }

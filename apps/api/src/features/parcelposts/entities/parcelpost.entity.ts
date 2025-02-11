@@ -1,7 +1,31 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class Parcelpost {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field(() => ID)
+  id: string;
+
+  @Field()
+  code: string;
+
+  @Field({ nullable: true, description: 'รหัสพัสดุ' })
+  parcelCode: string;
+
+  @Field({ description: 'ชื่อผู้ส่ง', nullable: true })
+  senderName: string;
+
+  @Field({ description: 'ชื่อผู้รับ', nullable: true })
+  receiverName: string;
+
+  @Field({ description: 'ห้อง', nullable: true })
+  unitCode: string;
+
+  @Field({ description: 'สถานะพัสดุ' })
+  status: string;
+
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date)
+  updatedAt: Date;
 }

@@ -1,15 +1,17 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { ParcelpostsService } from './parcelposts.service';
-import { Parcelpost } from './entities/parcelpost.entity';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateParcelpostInput } from './dto/create-parcelpost.input';
 import { UpdateParcelpostInput } from './dto/update-parcelpost.input';
+import { Parcelpost } from './entities/parcelpost.entity';
+import { ParcelpostsService } from './parcelposts.service';
 
 @Resolver(() => Parcelpost)
 export class ParcelpostsResolver {
   constructor(private readonly parcelpostsService: ParcelpostsService) {}
 
   @Mutation(() => Parcelpost)
-  createParcelpost(@Args('createParcelpostInput') createParcelpostInput: CreateParcelpostInput) {
+  createParcelpost(
+    @Args('createParcelpostInput') createParcelpostInput: CreateParcelpostInput,
+  ) {
     return this.parcelpostsService.create(createParcelpostInput);
   }
 
@@ -19,17 +21,22 @@ export class ParcelpostsResolver {
   }
 
   @Query(() => Parcelpost, { name: 'parcelpost' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => ID }) id: string) {
     return this.parcelpostsService.findOne(id);
   }
 
   @Mutation(() => Parcelpost)
-  updateParcelpost(@Args('updateParcelpostInput') updateParcelpostInput: UpdateParcelpostInput) {
-    return this.parcelpostsService.update(updateParcelpostInput.id, updateParcelpostInput);
+  updateParcelpost(
+    @Args('updateParcelpostInput') updateParcelpostInput: UpdateParcelpostInput,
+  ) {
+    return this.parcelpostsService.update(
+      updateParcelpostInput.id,
+      updateParcelpostInput,
+    );
   }
 
   @Mutation(() => Parcelpost)
-  removeParcelpost(@Args('id', { type: () => Int }) id: number) {
+  removeParcelpost(@Args('id', { type: () => ID }) id: string) {
     return this.parcelpostsService.remove(id);
   }
 }

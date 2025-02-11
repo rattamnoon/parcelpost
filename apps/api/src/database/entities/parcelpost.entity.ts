@@ -3,9 +3,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Locker } from './locker.entity';
 
 @Entity()
 export class ParcelPost {
@@ -38,4 +41,11 @@ export class ParcelPost {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @Column()
+  lockerId: number;
+
+  @ManyToOne(() => Locker, (locker) => locker.parcelPosts)
+  @JoinColumn({ name: 'lockerId' })
+  locker: Locker;
 }
