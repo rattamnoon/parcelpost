@@ -1,0 +1,14 @@
+query Parcelposts {
+  parcelposts {
+    id
+    code
+    parcelCode
+    senderName
+    receiverName
+    unitCode
+    status
+    lockerId
+    createdAt
+    updatedAt
+  }
+}
