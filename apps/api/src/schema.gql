@@ -38,6 +38,7 @@ type Parcelpost {
   customerReceiverDate: DateTime
   createdAt: DateTime!
   updatedAt: DateTime!
+  locker: Locker
 }
 
 type Query {
@@ -52,7 +53,7 @@ type Mutation {
   updateParcelpost(updateParcelpostInput: UpdateParcelpostInput!): Parcelpost!
   removeParcelpost(id: ID!): Parcelpost!
   nitiReceiver(parcelCode: String!): Parcelpost!
-  customerReceiver(id: ID!): Parcelpost!
+  customerReceiver(code: String!): Parcelpost!
   createLocker(createLockerInput: CreateLockerInput!): Locker!
   updateLocker(updateLockerInput: UpdateLockerInput!): Locker!
   removeLocker(id: Int!): Locker!

@@ -1,4 +1,15 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Mutation,
+  Query,
+  ResolveField,
+  Resolver,
+  Root,
+} from '@nestjs/graphql';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Locker } from '../lockers/entities/locker.entity';
 import { CreateParcelpostInput } from './dto/create-parcelpost.input';
 import { UpdateParcelpostInput } from './dto/update-parcelpost.input';
 import { Parcelpost } from './entities/parcelpost.entity';
@@ -6,7 +17,11 @@ import { ParcelpostsService } from './parcelposts.service';
 
 @Resolver(() => Parcelpost)
 export class ParcelpostsResolver {
-  constructor(private readonly parcelpostsService: ParcelpostsService) {}
+  constructor(
+    private readonly parcelpostsService: ParcelpostsService,
+    @InjectRepository(Locker)
+    private readonly lockerRepository: Repository<Locker>,
+  ) {}
 
   @Mutation(() => Parcelpost)
   async createParcelpost(
@@ -51,7 +66,12 @@ export class ParcelpostsResolver {
   }
 
   @Mutation(() => Parcelpost)
-  async customerReceiver(@Args('id', { type: () => ID }) id: string) {
-    return this.parcelpostsService.customerReceiver(id);
+  async customerReceiver(@Args('code', { type: () => String }) code: string) {
+    return this.parcelpostsService.customerReceiver(code);
+  }
+
+  @ResolveField(() => Locker, { nullable: true })
+  async locker(@Root() { lockerId }: Parcelpost) {
+    return lockerId ? this.lockerRepository.findOneBy({ id: lockerId }) : null;
   }
 }

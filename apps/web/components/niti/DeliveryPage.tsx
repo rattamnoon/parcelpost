@@ -3,21 +3,21 @@
 import {
   Parcelpost,
   ParcelpostsDocument,
-  useCreateParcelpostMutation,
+  useCustomerReceiverMutation,
 } from '@/gql/graphql';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import { Modal } from 'antd';
 import { useRouter } from 'nextjs-toploader/app';
 import { useState } from 'react';
 
-export const IncomingPage = () => {
+export const DeliveryPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [result, setResult] = useState<Parcelpost>();
   const router = useRouter();
 
-  const [createParcelpost] = useCreateParcelpostMutation({
+  const [nitiReceiver] = useCustomerReceiverMutation({
     onCompleted: (data) => {
-      setResult(data.createParcelpost as Parcelpost);
+      setResult(data.customerReceiver as Parcelpost);
       setIsModalOpen(true);
     },
     refetchQueries: [
@@ -33,15 +33,9 @@ export const IncomingPage = () => {
       <div style={{ width: '100%', aspectRatio: '1/1' }}>
         <Scanner
           onScan={(result) => {
-            createParcelpost({
+            nitiReceiver({
               variables: {
-                createParcelpostInput: {
-                  parcelCode: result[0]!.rawValue,
-                  senderName: 'โอ๊ต โอริโอ้',
-                  receiverName: 'อั๋น นักรัก',
-                  unitCode: '2001',
-                  status: 'รอรับ',
-                },
+                code: result[0]!.rawValue,
               },
             });
           }}
@@ -57,6 +51,7 @@ export const IncomingPage = () => {
           router.back();
         }}
       >
+        <p>Locker: {result?.locker?.code}</p>
         <p>รหัสพัสดุ: {result?.parcelCode}</p>
         <p>ชื่อผู้ส่ง: {result?.senderName}</p>
         <p>ชื่อผู้รับ: {result?.receiverName}</p>

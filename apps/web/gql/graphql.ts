@@ -75,12 +75,12 @@ export type MutationCreateParcelpostArgs = {
 
 
 export type MutationCustomerReceiverArgs = {
-  id: Scalars['ID']['input'];
+  code: Scalars['String']['input'];
 };
 
 
 export type MutationNitiReceiverArgs = {
-  id: Scalars['ID']['input'];
+  parcelCode: Scalars['String']['input'];
 };
 
 
@@ -109,6 +109,7 @@ export type Parcelpost = {
   createdAt: Scalars['DateTime']['output'];
   customerReceiverDate?: Maybe<Scalars['DateTime']['output']>;
   id: Scalars['ID']['output'];
+  locker?: Maybe<Locker>;
   lockerId?: Maybe<Scalars['Int']['output']>;
   nitiReceiverDate?: Maybe<Scalars['DateTime']['output']>;
   /** รหัสพัสดุ */
@@ -174,7 +175,7 @@ export type UpdateParcelpostInput = {
   unitCode?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type ParcelpostFragment = { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any };
+export type ParcelpostFragment = { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, building: string } | null };
 
 export type ParcelpostsQueryVariables = Exact<{
   status?: InputMaybe<Scalars['String']['input']>;
@@ -182,21 +183,21 @@ export type ParcelpostsQueryVariables = Exact<{
 }>;
 
 
-export type ParcelpostsQuery = { __typename?: 'Query', parcelposts: Array<{ __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any }> };
+export type ParcelpostsQuery = { __typename?: 'Query', parcelposts: Array<{ __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, building: string } | null }> };
 
-export type NitiReceiverMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+export type CreateParcelpostMutationVariables = Exact<{
+  createParcelpostInput: CreateParcelpostInput;
 }>;
 
 
-export type NitiReceiverMutation = { __typename?: 'Mutation', nitiReceiver: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any } };
+export type CreateParcelpostMutation = { __typename?: 'Mutation', createParcelpost: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, building: string } | null } };
 
 export type CustomerReceiverMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  code: Scalars['String']['input'];
 }>;
 
 
-export type CustomerReceiverMutation = { __typename?: 'Mutation', customerReceiver: { __typename?: 'Parcelpost', id: string } };
+export type CustomerReceiverMutation = { __typename?: 'Mutation', customerReceiver: { __typename?: 'Parcelpost', id: string, code: string, parcelCode?: string | null, senderName?: string | null, receiverName?: string | null, unitCode?: string | null, status: string, lockerId?: number | null, createdAt: any, updatedAt: any, locker?: { __typename?: 'Locker', id: number, building: string } | null } };
 
 export const ParcelpostFragmentDoc = gql`
     fragment Parcelpost on Parcelpost {
@@ -210,6 +211,10 @@ export const ParcelpostFragmentDoc = gql`
   lockerId
   createdAt
   updatedAt
+  locker {
+    id
+    building
+  }
 }
     `;
 export const ParcelpostsDocument = gql`
@@ -253,46 +258,46 @@ export type ParcelpostsQueryHookResult = ReturnType<typeof useParcelpostsQuery>;
 export type ParcelpostsLazyQueryHookResult = ReturnType<typeof useParcelpostsLazyQuery>;
 export type ParcelpostsSuspenseQueryHookResult = ReturnType<typeof useParcelpostsSuspenseQuery>;
 export type ParcelpostsQueryResult = Apollo.QueryResult<ParcelpostsQuery, ParcelpostsQueryVariables>;
-export const NitiReceiverDocument = gql`
-    mutation NitiReceiver($id: ID!) {
-  nitiReceiver(id: $id) {
+export const CreateParcelpostDocument = gql`
+    mutation CreateParcelpost($createParcelpostInput: CreateParcelpostInput!) {
+  createParcelpost(createParcelpostInput: $createParcelpostInput) {
     ...Parcelpost
   }
 }
     ${ParcelpostFragmentDoc}`;
-export type NitiReceiverMutationFn = Apollo.MutationFunction<NitiReceiverMutation, NitiReceiverMutationVariables>;
+export type CreateParcelpostMutationFn = Apollo.MutationFunction<CreateParcelpostMutation, CreateParcelpostMutationVariables>;
 
 /**
- * __useNitiReceiverMutation__
+ * __useCreateParcelpostMutation__
  *
- * To run a mutation, you first call `useNitiReceiverMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useNitiReceiverMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateParcelpostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateParcelpostMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [nitiReceiverMutation, { data, loading, error }] = useNitiReceiverMutation({
+ * const [createParcelpostMutation, { data, loading, error }] = useCreateParcelpostMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      createParcelpostInput: // value for 'createParcelpostInput'
  *   },
  * });
  */
-export function useNitiReceiverMutation(baseOptions?: Apollo.MutationHookOptions<NitiReceiverMutation, NitiReceiverMutationVariables>) {
+export function useCreateParcelpostMutation(baseOptions?: Apollo.MutationHookOptions<CreateParcelpostMutation, CreateParcelpostMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<NitiReceiverMutation, NitiReceiverMutationVariables>(NitiReceiverDocument, options);
+        return Apollo.useMutation<CreateParcelpostMutation, CreateParcelpostMutationVariables>(CreateParcelpostDocument, options);
       }
-export type NitiReceiverMutationHookResult = ReturnType<typeof useNitiReceiverMutation>;
-export type NitiReceiverMutationResult = Apollo.MutationResult<NitiReceiverMutation>;
-export type NitiReceiverMutationOptions = Apollo.BaseMutationOptions<NitiReceiverMutation, NitiReceiverMutationVariables>;
+export type CreateParcelpostMutationHookResult = ReturnType<typeof useCreateParcelpostMutation>;
+export type CreateParcelpostMutationResult = Apollo.MutationResult<CreateParcelpostMutation>;
+export type CreateParcelpostMutationOptions = Apollo.BaseMutationOptions<CreateParcelpostMutation, CreateParcelpostMutationVariables>;
 export const CustomerReceiverDocument = gql`
-    mutation CustomerReceiver($id: ID!) {
-  customerReceiver(id: $id) {
-    id
+    mutation CustomerReceiver($code: String!) {
+  customerReceiver(code: $code) {
+    ...Parcelpost
   }
 }
-    `;
+    ${ParcelpostFragmentDoc}`;
 export type CustomerReceiverMutationFn = Apollo.MutationFunction<CustomerReceiverMutation, CustomerReceiverMutationVariables>;
 
 /**
@@ -308,7 +313,7 @@ export type CustomerReceiverMutationFn = Apollo.MutationFunction<CustomerReceive
  * @example
  * const [customerReceiverMutation, { data, loading, error }] = useCustomerReceiverMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      code: // value for 'code'
  *   },
  * });
  */
