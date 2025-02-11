@@ -3,12 +3,15 @@
 import { useParcelpostsQuery } from "@/gql/graphql";
 import { Avatar, Button, Flex, List, Tabs, TabsProps } from "antd";
 import React, { useMemo, useState } from "react";
+import { CustomerDetailModal } from "./CustomerDetailModal";
 import { CustomerModal } from "./CustomerModal";
 
 export const CustomerPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("รอรับ");
   const [code, setCode] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
+  const [detailOpen, setDetailOpen] = useState<boolean>(false);
+  const [detailCode, setDetailCode] = useState<string>("");
 
   const { data, loading } = useParcelpostsQuery({
     variables: {
@@ -90,7 +93,8 @@ export const CustomerPage: React.FC = () => {
                 <Button
                   type="link"
                   onClick={() => {
-                    console.log(item);
+                    setDetailOpen(true);
+                    setDetailCode(item.code);
                   }}
                 >
                   ดูรายละเอียด
@@ -101,6 +105,11 @@ export const CustomerPage: React.FC = () => {
         )}
       </Flex>
       <CustomerModal open={open} onCancel={() => setOpen(false)} code={code} />
+      <CustomerDetailModal
+        open={detailOpen}
+        onCancel={() => setDetailOpen(false)}
+        code={detailCode}
+      />
     </>
   );
 };
