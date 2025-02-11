@@ -15,6 +15,7 @@ export const CustomerPage: React.FC = () => {
   const { data, loading } = useParcelpostsQuery({
     variables: {
       status: activeTab,
+      unitCode: "2001",
     },
   });
 

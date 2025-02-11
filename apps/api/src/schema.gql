@@ -41,7 +41,7 @@ type Parcelpost {
 }
 
 type Query {
-  parcelposts(status: String): [Parcelpost!]!
+  parcelposts(status: String, unitCode: String): [Parcelpost!]!
   parcelpost(id: ID!): Parcelpost!
   lockers: [Locker!]!
   locker(id: Int!): Locker!

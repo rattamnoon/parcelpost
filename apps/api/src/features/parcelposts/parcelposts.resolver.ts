@@ -18,8 +18,9 @@ export class ParcelpostsResolver {
   @Query(() => [Parcelpost], { name: 'parcelposts' })
   async findAll(
     @Args('status', { type: () => String, nullable: true }) status: string,
+    @Args('unitCode', { type: () => String, nullable: true }) unitCode: string,
   ) {
-    return this.parcelpostsService.findAll(status);
+    return this.parcelpostsService.findAll(status, unitCode);
   }
 
   @Query(() => Parcelpost, { name: 'parcelpost' })

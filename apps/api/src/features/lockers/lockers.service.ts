@@ -42,7 +42,7 @@ export class LockersService {
   }
 
   async master() {
-    const arrs = Array.from({ length: 20 }, (_, i) => i + 1);
+    const arrs = Array.from({ length: 100 }, (_, i) => i + 1);
     const masters = arrs.map((arr) => ({
       code: `L-0001`.slice(0, 2) + arr.toString().padStart(2, '0'),
       building: 'A',

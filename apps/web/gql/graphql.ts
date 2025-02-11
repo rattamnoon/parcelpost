@@ -145,6 +145,7 @@ export type QueryParcelpostArgs = {
 
 export type QueryParcelpostsArgs = {
   status?: InputMaybe<Scalars['String']['input']>;
+  unitCode?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateLockerInput = {
@@ -177,6 +178,7 @@ export type ParcelpostFragment = { __typename?: 'Parcelpost', id: string, code: 
 
 export type ParcelpostsQueryVariables = Exact<{
   status?: InputMaybe<Scalars['String']['input']>;
+  unitCode?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -211,8 +213,8 @@ export const ParcelpostFragmentDoc = gql`
 }
     `;
 export const ParcelpostsDocument = gql`
-    query Parcelposts($status: String) {
-  parcelposts(status: $status) {
+    query Parcelposts($status: String, $unitCode: String) {
+  parcelposts(status: $status, unitCode: $unitCode) {
     ...Parcelpost
   }
 }
@@ -231,6 +233,7 @@ export const ParcelpostsDocument = gql`
  * const { data, loading, error } = useParcelpostsQuery({
  *   variables: {
  *      status: // value for 'status'
+ *      unitCode: // value for 'unitCode'
  *   },
  * });
  */

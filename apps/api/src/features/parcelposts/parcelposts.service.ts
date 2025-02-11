@@ -1,3 +1,4 @@
+import { Locker } from '@/database/entities/locker.entity';
 import { ParcelPost } from '@/database/entities/parcelpost.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,6 +12,8 @@ export class ParcelpostsService {
   constructor(
     @InjectRepository(ParcelPost)
     private parcelpostRepository: Repository<ParcelPost>,
+    @InjectRepository(Locker)
+    private lockerRepository: Repository<Locker>,
   ) {}
 
   async generateCode(): Promise<string> {
@@ -23,7 +26,7 @@ export class ParcelpostsService {
       },
     });
 
-    const code = `P-${dayjs().format('DDMMYYYY')}-${lastCode.toString().padStart(5, '0')}`;
+    const code = `P-${dayjs().format('DDMMYYYY')}-${(lastCode + 1).toString().padStart(5, '0')}`;
 
     return code;
   }
@@ -31,9 +34,21 @@ export class ParcelpostsService {
   async create(createParcelpostInput: CreateParcelpostInput) {
     const code = await this.generateCode();
 
+    const locker = await this.lockerRepository.findOne({
+      where: { lock: false },
+      order: { id: 'ASC' },
+    });
+
+    if (locker) {
+      locker.lock = true;
+
+      await this.lockerRepository.save(locker);
+    }
+
     const createParcelpost = this.parcelpostRepository.create({
       ...createParcelpostInput,
       code,
+      lockerId: locker?.id,
     });
 
     return this.parcelpostRepository.save(createParcelpost);
@@ -54,13 +69,24 @@ export class ParcelpostsService {
     parcelpost.customerReceiverDate = dayjs().toDate();
     parcelpost.status = 'รับแล้ว';
 
+    if (parcelpost?.lockerId) {
+      const locker = await this.lockerRepository.findOneBy({
+        id: parcelpost.lockerId,
+      });
+
+      locker.lock = false;
+
+      await this.lockerRepository.save(locker);
+    }
+
     return this.parcelpostRepository.save(parcelpost);
   }
 
-  async findAll(status: string) {
+  async findAll(status: string, unitCode: string) {
     return this.parcelpostRepository.find({
       where: {
         ...(status ? { status } : {}),
+        ...(unitCode ? { unitCode } : {}),
       },
     });
   }
