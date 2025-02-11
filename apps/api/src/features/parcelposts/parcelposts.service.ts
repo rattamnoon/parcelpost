@@ -34,11 +34,6 @@ export class ParcelpostsService {
   async create(createParcelpostInput: CreateParcelpostInput) {
     const code = await this.generateCode();
 
-    const createParcelpost = this.parcelpostRepository.create({
-      ...createParcelpostInput,
-      code,
-    });
-
     const locker = await this.lockerRepository.findOne({
       where: { lock: false },
       order: { id: 'ASC' },
@@ -49,6 +44,12 @@ export class ParcelpostsService {
 
       await this.lockerRepository.save(locker);
     }
+
+    const createParcelpost = this.parcelpostRepository.create({
+      ...createParcelpostInput,
+      code,
+      lockerId: locker?.id,
+    });
 
     return this.parcelpostRepository.save(createParcelpost);
   }
@@ -67,6 +68,16 @@ export class ParcelpostsService {
 
     parcelpost.customerReceiverDate = dayjs().toDate();
     parcelpost.status = 'รับแล้ว';
+
+    if (parcelpost?.lockerId) {
+      const locker = await this.lockerRepository.findOneBy({
+        id: parcelpost.lockerId,
+      });
+
+      locker.lock = false;
+
+      await this.lockerRepository.save(locker);
+    }
 
     return this.parcelpostRepository.save(parcelpost);
   }
