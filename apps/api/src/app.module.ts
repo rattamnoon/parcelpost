@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -12,7 +13,8 @@ import { AppService } from './app.service';
       username: 'root',
       password: 'password',
       database: 'parcelpost',
-      entities: [],
+      entities: [join(__dirname, './database/entities/**/*{.ts,.js}')],
+      migrations: [join(__dirname, './database/migrations/**/*{.ts,.js}')],
       synchronize: false,
     }),
   ],
