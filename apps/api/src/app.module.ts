@@ -5,8 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ParcelpostsModule } from './features/parcelposts/parcelposts.module';
 import { LockersModule } from './features/lockers/lockers.module';
+import { ParcelpostsModule } from './features/parcelposts/parcelposts.module';
 
 @Module({
   imports: [

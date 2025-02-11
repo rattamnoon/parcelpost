@@ -16,8 +16,10 @@ export class ParcelpostsResolver {
   }
 
   @Query(() => [Parcelpost], { name: 'parcelposts' })
-  async findAll() {
-    return this.parcelpostsService.findAll();
+  async findAll(
+    @Args('status', { type: () => String, nullable: true }) status: string,
+  ) {
+    return this.parcelpostsService.findAll(status);
   }
 
   @Query(() => Parcelpost, { name: 'parcelpost' })
@@ -38,5 +40,15 @@ export class ParcelpostsResolver {
   @Mutation(() => Parcelpost)
   async removeParcelpost(@Args('id', { type: () => ID }) id: string) {
     return this.parcelpostsService.remove(id);
+  }
+
+  @Mutation(() => Parcelpost)
+  async nitiReceiver(@Args('id', { type: () => ID }) id: string) {
+    return this.parcelpostsService.nitiReceiver(id);
+  }
+
+  @Mutation(() => Parcelpost)
+  async customerReceiver(@Args('id', { type: () => ID }) id: string) {
+    return this.parcelpostsService.customerReceiver(id);
   }
 }

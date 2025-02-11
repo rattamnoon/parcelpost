@@ -4,7 +4,7 @@ import { IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
 import { Modal } from 'antd';
 import { useState } from 'react';
 
-export const ScanQrPage = () => {
+export const IncomingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [result, setResult] = useState<IDetectedBarcode[]>([]);
 

@@ -26,6 +26,12 @@ export class Parcelpost {
   @Field(() => Int, { nullable: true })
   lockerId: number;
 
+  @Field(() => Date, { nullable: true })
+  nitiReceiverDate: Date;
+
+  @Field(() => Date, { nullable: true })
+  customerReceiverDate: Date;
+
   @Field(() => Date)
   createdAt: Date;
 

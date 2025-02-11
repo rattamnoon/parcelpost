@@ -1,0 +1,32 @@
+
+fragment Parcelpost on Parcelpost {
+  id
+  code
+  parcelCode
+  senderName
+  receiverName
+  unitCode
+  status
+  lockerId
+  createdAt
+  updatedAt
+}
+
+query Parcelposts($status: String) {
+  parcelposts(status: $status) {
+    ...Parcelpost
+  }
+}
+
+
+mutation NitiReceiver($id: ID!) {
+  nitiReceiver(id: $id) {
+    ...Parcelpost
+  }
+}
+
+mutation CustomerReceiver($id: ID!) {
+  customerReceiver(id: $id) {
+    id
+  }
+}
