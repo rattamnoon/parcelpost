@@ -49,6 +49,7 @@ export class ParcelpostsService {
       ...createParcelpostInput,
       code,
       lockerId: locker?.id,
+      nitiReceiverDate: dayjs().toDate(),
     });
 
     return this.parcelpostRepository.save(createParcelpost);
@@ -101,6 +102,7 @@ export class ParcelpostsService {
         ...(unitCode ? { unitCode } : {}),
       },
       relations: { locker: true },
+      order: { createdAt: 'DESC' },
     });
   }
 

@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { useParcelpostsQuery } from "@/gql/graphql";
-import { Avatar, Button, Flex, List, Tabs, TabsProps, Typography } from "antd";
-import React, { useMemo, useState } from "react";
-import { CustomerDetailModal } from "./CustomerDetailModal";
-import { CustomerModal } from "./CustomerModal";
+import { useParcelpostsQuery } from '@/gql/graphql';
+import { Avatar, Button, Flex, List, Tabs, TabsProps, Typography } from 'antd';
+import React, { useMemo, useState } from 'react';
+import { CustomerDetailModal } from './CustomerDetailModal';
+import { CustomerModal } from './CustomerModal';
 
 const { Link } = Typography;
 
 export const CustomerPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>("รอรับ");
-  const [code, setCode] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<string>('รอรับ');
+  const [code, setCode] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const [detailOpen, setDetailOpen] = useState<boolean>(false);
-  const [detailCode, setDetailCode] = useState<string>("");
+  const [detailCode, setDetailCode] = useState<string>('');
 
   const { data, loading } = useParcelpostsQuery({
     variables: {
       status: activeTab,
-      unitCode: "2001",
+      unitCode: '2001',
     },
     pollInterval: 1000,
   });
@@ -29,14 +29,14 @@ export const CustomerPage: React.FC = () => {
     setActiveTab(key);
   };
 
-  const items: TabsProps["items"] = [
+  const items: TabsProps['items'] = [
     {
-      key: "รอรับ",
-      label: "รอรับ",
+      key: 'รอรับ',
+      label: 'รอรับ',
     },
     {
-      key: "รับแล้ว",
-      label: "รับแล้ว",
+      key: 'รับแล้ว',
+      label: 'รับแล้ว',
     },
   ];
 
@@ -49,7 +49,7 @@ export const CustomerPage: React.FC = () => {
           onChange={onChange}
           activeKey={activeTab}
         />
-        {activeTab === "รอรับ" && (
+        {activeTab === 'รอรับ' && (
           <List
             dataSource={parcelposts}
             loading={loading}
@@ -61,7 +61,16 @@ export const CustomerPage: React.FC = () => {
                       src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
                     />
                   }
-                  title={<Link href="#">{item.code}</Link>}
+                  title={
+                    <Link
+                      onClick={() => {
+                        setCode(item.code);
+                        setOpen(true);
+                      }}
+                    >
+                      {item.code}
+                    </Link>
+                  }
                   description={`รหัสพัสดุ: ${item.parcelCode}`}
                 />
                 <Button
@@ -77,7 +86,7 @@ export const CustomerPage: React.FC = () => {
             )}
           />
         )}
-        {activeTab === "รับแล้ว" && (
+        {activeTab === 'รับแล้ว' && (
           <List
             dataSource={parcelposts}
             loading={loading}
@@ -89,7 +98,16 @@ export const CustomerPage: React.FC = () => {
                       src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
                     />
                   }
-                  title={<Link href="#">{item.code}</Link>}
+                  title={
+                    <Link
+                      onClick={() => {
+                        setDetailOpen(true);
+                        setDetailCode(item.code);
+                      }}
+                    >
+                      {item.code}
+                    </Link>
+                  }
                   description={`รหัสพัสดุ: ${item.parcelCode}`}
                 />
                 <Button
